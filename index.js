@@ -111,13 +111,71 @@ app.post("/addemployee", (req, res) => {
     const description = req.body.description;
 
     db.query(
-        "INSERT INTO employees (firstName, lastName, gender, mobile, password, designation, department, address, email, birth, education, description) VALUES (?,?,?,?,?,?,?,?,?,?,?,)",
+        "INSERT INTO employees (firstName, lastName, gender, mobile, password, designation, department, address, email, birth, education, description) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)",
         [firstName, lastName, gender, mobile, password, designation, department, address, email, birth, education, description],
         (err, result) => {
             if (err) {
                 console.log(err);
             } else {
                 res.send("Values Inserted");
+            }
+        }
+    );
+});
+
+app.get("/employees", (req, res) => {
+    db.query("SELECT * FROM employees", (err, result) => {
+        if (err) {
+            console.log(err);
+        } else {
+            res.send(result);
+        }
+    });
+});
+
+
+app.delete("/employeeDelete/:id", (req, res) => {
+    const id = req.params.id;
+    db.query("DELETE FROM employees WHERE id = ?", id, (err, result) => {
+        if (err) {
+            console.log(err);
+        } else {
+            res.send(result);
+        }
+    });
+});
+
+// Get specfic project by id
+app.get('/employee/:id', (req, res) => {
+    const id = req.params.id;
+    db.query('SELECT * FROM employees WHERE id = ?', id, (err, result) => {
+        if (err) {
+            console.log(err);
+        } else {
+            res.send(result);
+        }
+    })
+});
+
+app.put("/employeeUpdae/:id", (req, res) => {
+    const firstName = req.body.firstName;
+    const lastName = req.body.lastName;
+    const gender = req.body.gender;
+    const mobile = req.body.mobile;
+    const password = req.body.password;
+    const designation = req.body.designation;
+    const department = req.body.department;
+    const address = req.body.address;
+    const email = req.body.email;
+    const birth = req.body.birth;
+    const education = req.body.education;
+    const description = req.body.description;
+    db.query('UPDATE projects SET firstName = ?, lastName = ?, department = ?, gender = ? mobile = ?, password = ?, designation = ?, address = ?email= ?,birth= ?,education= ?,description= ?,  WHERE id = ?', [firstName, lastName, department, gender, mobile, password, designation, address, email, birth, education, description, id],
+        (err, result) => {
+            if (err) {
+                console.log(err);
+            } else {
+                res.send(result);
             }
         }
     );
