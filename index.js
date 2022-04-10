@@ -158,6 +158,7 @@ app.get('/employee/:id', (req, res) => {
 });
 
 app.put("/employeeUpdae/:id", (req, res) => {
+    const id = req.body.id;
     const firstName = req.body.firstName;
     const lastName = req.body.lastName;
     const gender = req.body.gender;
@@ -170,7 +171,7 @@ app.put("/employeeUpdae/:id", (req, res) => {
     const birth = req.body.birth;
     const education = req.body.education;
     const description = req.body.description;
-    db.query('UPDATE projects SET firstName = ?, lastName = ?, department = ?, gender = ? mobile = ?, password = ?, designation = ?, address = ?email= ?,birth= ?,education= ?,description= ?,  WHERE id = ?', [firstName, lastName, department, gender, mobile, password, designation, address, email, birth, education, description, id],
+    db.query('UPDATE employees SET firstName = ?, lastName = ?, department = ?, gender = ? mobile = ?, password = ?, designation = ?, address = ?, email= ?,birth= ?,education= ?,description= ?,  WHERE id = ?', [firstName, lastName, department, gender, mobile, password, designation, address, email, birth, education, description, id],
         (err, result) => {
             if (err) {
                 console.log(err);
@@ -179,6 +180,63 @@ app.put("/employeeUpdae/:id", (req, res) => {
             }
         }
     );
+});
+
+
+app.post("/addclient", (req, res) => {
+    const name = req.body.name;
+    const companyName = req.body.companyName;
+    const email = req.body.email;
+    const mobile = req.body.mobile;
+    const date = req.body.date;
+    const currency = req.body.currency;
+    const billMethod = req.body.billMethod;
+    const location = req.body.location;
+    const description = req.body.description;
+
+    db.query(
+        "INSERT INTO clients (name, companyName, email, mobile, date, currency, billMethod, location, description) VALUES (?,?,?,?,?,?,?,?,?)",
+        [name, companyName, email, mobile, date, currency, billMethod, location, description],
+        (err, result) => {
+            if (err) {
+                console.log(err);
+            } else {
+                res.send("Values Inserted");
+            }
+        }
+    );
+});
+
+app.get("/clients", (req, res) => {
+    db.query("SELECT * FROM clients", (err, result) => {
+        if (err) {
+            console.log(err);
+        } else {
+            res.send(result);
+        }
+    });
+});
+
+app.delete("/clientDelete/:id", (req, res) => {
+    const id = req.params.id;
+    db.query("DELETE FROM clients WHERE id = ?", id, (err, result) => {
+        if (err) {
+            console.log(err);
+        } else {
+            res.send(result);
+        }
+    });
+});
+
+app.get('/client/:id', (req, res) => {
+    const id = req.params.id;
+    db.query('SELECT * FROM clients WHERE id = ?', id, (err, result) => {
+        if (err) {
+            console.log(err);
+        } else {
+            res.send(result);
+        }
+    })
 });
 
 
